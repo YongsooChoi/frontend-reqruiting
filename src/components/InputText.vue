@@ -7,8 +7,18 @@ defineProps<InputTextProps>();
 
 const model = defineModel<string>();
 
+const focusPreviousInput = (currentTarget: HTMLElement) => {
+  if (currentTarget?.previousElementSibling) {
+    const inputElement = currentTarget.previousElementSibling as HTMLInputElement;
+    inputElement.focus();
+  }
+};
+
 const clearInput = (event: MouseEvent) => {
   model.value = "";
+
+  const currentTarget = event.currentTarget as HTMLElement;
+  focusPreviousInput(currentTarget);
 };
 </script>
 
