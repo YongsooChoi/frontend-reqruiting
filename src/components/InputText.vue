@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { defineEmits } from "vue";
+
 type InputTextProps = {
   label: string;
   error?: {
@@ -8,20 +10,28 @@ type InputTextProps = {
 
 defineProps<InputTextProps>();
 
+const emits = defineEmits(["input"]);
 const model = defineModel<string>();
 
 const focusPreviousInput = (currentTarget: HTMLElement) => {
   if (currentTarget?.previousElementSibling) {
-    const inputElement = currentTarget.previousElementSibling as HTMLInputElement;
+    const inputElement =
+      currentTarget.previousElementSibling as HTMLInputElement;
     inputElement.focus();
   }
 };
 
 const clearInput = (event: MouseEvent) => {
   model.value = "";
+  emits("input", "");
 
   const currentTarget = event.currentTarget as HTMLElement;
   focusPreviousInput(currentTarget);
+};
+
+const handleInput = (event: Event) => {
+  const inputElement = event.target as HTMLInputElement;
+  emits("input", inputElement.value);
 };
 </script>
 
@@ -33,6 +43,7 @@ const clearInput = (event: MouseEvent) => {
       type="text"
       autocomplete="off"
       v-model="model"
+      @input="handleInput"
     />
     <button
       v-if="model && model.length > 0"
