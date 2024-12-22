@@ -1,6 +1,9 @@
 <script setup lang="ts">
 type InputTextProps = {
   label: string;
+  error?: {
+    message: string;
+  };
 };
 
 defineProps<InputTextProps>();
@@ -40,4 +43,11 @@ const clearInput = (event: MouseEvent) => {
       X
     </button>
   </label>
+  <span class="error" v-if="error">{{ error.message }}</span>
 </template>
+
+<style scoped>
+span.error {
+  color: red;
+}
+</style>
